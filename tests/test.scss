@@ -1,0 +1,14 @@
+$color3: red;
+
+p {
+color: ${color1};
+}
+
+.heading {
+font-size: 12px;
+color: ${color2};
+}
+
+.red {
+    color: $color3;
+}
