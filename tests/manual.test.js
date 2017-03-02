@@ -40,7 +40,7 @@ let opts3 = {
 
 };
 
-let c = new Compiler(opts2);
+let c = new Compiler(opts3);
 
 c.compile()
     .then((res) => {
