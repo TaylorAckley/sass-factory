@@ -4,8 +4,7 @@
     "description": "Interpolate values from a database or form and create a compiled sass string.   Returns a buffer of both compressed and uncompressed files.   Optional delivery to S3",
     "main": "index.js",
     "scripts": {
-        "test": "npm test",
-        "manual": "node tests/manual.test.js"
+        "test": "node tests/manual.test.js"
     },
     "repository": {
         "type": "git",
