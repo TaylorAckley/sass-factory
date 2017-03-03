@@ -26,8 +26,6 @@ let _scaffold = {
 
 };
 
-console.log(_scaffold.tpl);
-
 let assert = require('assert');
 let chai = require('chai'),
     expect = chai.expect,
@@ -53,26 +51,104 @@ should.exist
 */
 
 describe('Compiler', (done) => {
+    it('buffer in buffer out', (done) => {
+        let _opts = {
+            tpl: _scaffold.tpl,
+            opts: _scaffold.opts
+        };
+        let c = new Compiler(_opts);
+        c.compile()
+            .then((res) => {
+                res.min.should.be.a('string');
+                res.dev.should.be.a('string');
+                should.exist(res.metadata);
+                done();
+            })
+            .catch((err) => console.log(err));
+    });
+    it('s3 in s3 out', (done) => {
+        let _opts = {
+            src: {
+                key: 'test.scss',
+                bucket: 'ka-files'
+            },
+            opts: {
+                color1: "#000",
+                color2: "#FFF"
+            },
+            out: {
+                key: 'compiled.css',
+                bucket: 'ka-files'
+            }
 
-    describe('constructor', (done) => {
-        it('should return a buffer', (done) => {
-            let _opts = {
-                tpl: _scaffold.tpl,
-                opts: _scaffold.opts
-            };
-            let c = new Compiler(_opts);
-            c.compile()
-                .then((res) => {
-                    console.log('waypoint 4');
-                    res.min.should.be.a('string');
-                    res.dev.should.be.a('string');
-                    should.exist(res.metadata);
-                    done();
-                })
-                .catch((err) => console.log(err));
-        });
+        };
+        let c = new Compiler(_opts);
+        c.compile()
+            .then((res) => {
+                res.min.key.should.be.a('string');
+                res.min.key.should.contain('.min.css');
+                res.dev.key.should.be.a('string');
+                should.exist(res.metadata);
+                done();
+            })
+            .catch((err) => console.log(err));
     });
 
+    it('should throw an error if the src extension is not css or scss', (done) => {
+        let _opts = {
+            src: {
+                key: 'test.raw',
+                bucket: 'ka-files'
+            },
+            opts: {
+                color1: "#000",
+                color2: "#FFF"
+            },
+            out: {
+                key: 'compiled.css',
+                bucket: 'ka-files'
+            }
+
+        };
+        let c = new Compiler(_opts);
+        c.compile()
+            .then((res) => {
+                console.log('got a response when there should be none');
+            })
+            .catch((err) => {
+                console.log(err);
+                should.exist(err).equal('Error: Source (src) filetype must be a css, scss or txt file.');
+                done();
+            });
+    });
+
+    it('should throw an error if the out extension is not css', (done) => {
+        let _opts = {
+            src: {
+                key: 'test.scss',
+                bucket: 'ka-files'
+            },
+            opts: {
+                color1: "#000",
+                color2: "#FFF"
+            },
+            out: {
+                key: 'compiled.txt',
+                bucket: 'ka-files'
+            }
+
+        };
+        let c = new Compiler(_opts);
+        c.compile()
+            .then((res) => {
+                console.log('got a response when there should be none');
+            })
+            .catch((err) => {
+                console.log(err);
+                should.exist(err).equal('Error: Deliverable (out) filetype must be a css file.');
+                done();
+            });
+    });
 
 
 });
