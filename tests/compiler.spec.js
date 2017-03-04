@@ -116,8 +116,8 @@ describe('Compiler', (done) => {
                 console.log('got a response when there should be none');
             })
             .catch((err) => {
-                console.log(err);
-                should.exist(err).equal('Error: Source (src) filetype must be a css, scss or txt file.');
+                //console.log(err);
+                err.should.equal('Error: Source (src) filetype must be a css, scss or txt file.');
                 done();
             });
     });
@@ -144,8 +144,7 @@ describe('Compiler', (done) => {
                 console.log('got a response when there should be none');
             })
             .catch((err) => {
-                console.log(err);
-                should.exist(err).equal('Error: Deliverable (out) filetype must be a css file.');
+                err.should.equal('Error: Deliverable (out) filetype must be a css file.');
                 done();
             });
     });
