@@ -3,6 +3,7 @@
 require('dotenv').config();
 
 let fs = require('fs');
+let moment = require('moment');
 let base64 = require('../lib/base64.module');
 
 let ts = moment().format('YYY_MM_DD');
