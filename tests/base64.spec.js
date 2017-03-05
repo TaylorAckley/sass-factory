@@ -17,14 +17,17 @@ let chai = require('chai'),
     expect = chai.expect,
     should = chai.should();
 
+let base64regex = /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/;
+
 describe('base64FromString', () => {
     it('should be defined', () => {
         should.exist(base64.base64FromString);
     });
     it('should return a base64 string', () => {
         let res = base64.base64FromString(_str);
-        console.log(res);
-        res.should.equal(_check);
+        let test = base64regex.test(res);
+        console.log(test);
+        test.should.be.true;
     });
 });
 
@@ -34,7 +37,8 @@ describe('base64FromFile', () => {
     });
     it('should return a base64 string', () => {
         let res = base64.base64FromFile(_file);
-        console.log(res);
-        res.should.equal(_check);
+        let test = base64regex.test(res);
+        console.log(test);
+        test.should.be.true;
     });
 });
